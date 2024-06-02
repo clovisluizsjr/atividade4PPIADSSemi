@@ -1,0 +1,29 @@
+{
+  "name": "atividade4ppiadssemi",
+  "version": "1.0.0",
+  "description": "desenvolvimento da atividade 04",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clovisluizsjr/atividade4PPIADSSemi.git"
+  },
+  "keywords": [
+    "atividade",
+    "quatro",
+    "ppi"
+  ],
+  "author": "Clovis Luiz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clovisluizsjr/atividade4PPIADSSemi.git"
+  },
+  "homepage": "https://github.com/clovisluizsjr/atividade4PPIADSSemi.git",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
