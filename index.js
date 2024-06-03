@@ -17,7 +17,7 @@ aplicacao.use(session({
     resave: true,
     saveUninitialized: true,
     cookie: {
-        maxAge:  1000 * 60 * 10,    //10 minutos
+        maxAge: 1000 * 60 * 10,    //10 minutos
     }
 }));
 
@@ -25,11 +25,11 @@ aplicacao.use(cookieParser());
 
 
 function userAutentication(requisicao, resposta, next) {
-    if (requisicao.session.userAuthenticate) {
+    if (requisicao.session.userAutenticado) {
         next();
     }
     else {
-        resposta.redirect('/login.html');
+        resposta.redirect('/pageLogin.html');
     }
 }
 
@@ -48,13 +48,24 @@ function cadastroProduto(requisicao, resposta) {
             precocusto: precocusto,
             precovenda: precovenda,
             data: data,
-            quantidade: quantidade,            
+            quantidade: quantidade,
             nome: nome,
         });
         resposta.redirect('/listarProdutos');
     }
-    else{
-        resposta.redirect('/pageCadastro.html');
+    else {
+        resposta.write('<!DOCTYPE html>');
+        resposta.write('<html>');
+        resposta.write('<head>');
+        resposta.write('<meta charset="UTF-8">');
+        resposta.write('<title>Cadastro de produtos</title>');
+        resposta.write('</head>');
+        resposta.write('<body>');
+        resposta.write('<p>Preencha todos os campos</p>');
+        resposta.write('<a href="/pageCadastro.html">Voltar</a>');
+        resposta.write('</body>');
+        resposta.write('</html>');
+        resposta.end();
     }
 }
 
@@ -62,7 +73,7 @@ function userAuthenticate(requisicao, resposta) {
     const usuario = requisicao.body.user;
     const senha = requisicao.body.senha;
     if (usuario == 'admin' && senha == '123') {
-        requisicao.session.userAutentication = true;
+        requisicao.session.userAutenticado = true;
         resposta.cookie('dataUltimoAcesso', new Date().toLocaleString(), {
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24 * 30
@@ -138,13 +149,12 @@ aplicacao.get('/listarProdutos', userAutentication, (req, resp) => {
 });
 
 aplicacao.get('/login', (req, resp) => {
-    resp.redirect('/login.html');
+    resp.redirect('/pageLogin.html');
 });
 
 aplicacao.get('/logout', (req, resp) => {
-    req.session.destroy();
-    //req.session.usuarioLogado = false;
-    resp.redirect('/login.html');
+    req.session.usuarioLogado = false;
+    resp.redirect('/pageLogin.html');
 });
 
 

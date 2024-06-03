@@ -14,14 +14,14 @@
     <br>
     <div class="container w-25">
         <h1>Autenticação...</h1>
-        <form action='/loginUsuario' method='POST' novalidate>
+        <form action='/login' method='POST' novalidate>
             <div class="mb-3">
                 <label for="nome" class="form-label">Usuário</label>
-                <input type="text" class="form-control" id="user">
+                <input type="text" class="form-control" id="user" name="user">
             </div>
             <div class="mb-3">
                 <label for="senha" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="senha">
+                <input type="password" class="form-control" id="senha" name="senha">
             </div>
             <button type="submit" class="btn btn-primary">Entrar</button>
         </form>
