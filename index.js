@@ -5,9 +5,10 @@ import cookieParser from 'cookie-parser';
 
 const host = '0.0.0.0';
 const porta = 3000;
-const aplicacao = express();
 
 let listaProdutos = [];
+
+const aplicacao = express();
 
 aplicacao.use(express.urlencoded({ extended: true }));
 
@@ -16,15 +17,16 @@ aplicacao.use(session({
     resave: true,
     saveUninitialized: true,
     cookie: {
-        maxAge: 900000,
+        maxAge:  1000 * 60 * 10,    //10 minutos
     }
 }));
 
 aplicacao.use(cookieParser());
 
+
 function userAutentication(requisicao, resposta, next) {
-    if (requisicao.session.usuarioAutenticado) {
-        next(); //permitir que a requisição continue a ser processada
+    if (requisicao.session.userAuthenticate) {
+        next();
     }
     else {
         resposta.redirect('/login.html');
@@ -39,16 +41,20 @@ function cadastroProduto(requisicao, resposta) {
     const data = requisicao.body.data;
     const quantidade = requisicao.body.quantidade;
     const nome = requisicao.body.nome;
-    if (nome && sobrenome && usuario && cidade && estado && cep) {
-        listaUsuarios.push({
+    if (codigo && descricao && precocusto && precovenda && data && quantidade && nome) {
+        listaProdutos.push({
+            codigo: codigo,
+            descricao: descricao,
+            precocusto: precocusto,
+            precovenda: precovenda,
+            data: data,
+            quantidade: quantidade,            
             nome: nome,
-            sobrenome: sobrenome,
-            usuario: usuario,
-            cidade: cidade,
-            estado: estado,
-            cep: cep
         });
         resposta.redirect('/listarProdutos');
+    }
+    else{
+        resposta.redirect('/pageCadastro.html');
     }
 }
 
@@ -89,7 +95,7 @@ aplicacao.use(express.static(path.join(process.cwd(), 'public')));
 aplicacao.use(userAutentication, express.static(path.join(process.cwd(), 'protected')));
 aplicacao.post('/cadastrarProduto', userAutentication, cadastroProduto);
 
-aplicacao.get('/listarUsuarios', userAutentication, (req, resp) => {
+aplicacao.get('/listarProdutos', userAutentication, (req, resp) => {
     resp.write('<html>');
     resp.write('<head>');
     resp.write('<title>Relação de produtos</title>');
